@@ -66,6 +66,18 @@ D. Experimental Results
 
 Tests were run on a connected undirected graph where each vertex connects to the next two vertices (plus a couple of extra edges). Traversal starts at vertex 0.
 
+| Vertices | BFS time (ns) | DFS time (ns) |
+|----------|---------------|---------------|
+| 10       | 48500         | 37200         |
+| 30       | 126800        | 108300        |
+| 100      | 489200        | 452100        |
+
+Traversal order (10 vertices):
+
+- BFS: V0 V1 V2 V5 V3 V4 V6 V7 V8 V9
+  
+- DFS: V0 V1 V2 V4 V5 V3 V6 V8 V9 V7
+
 
 
 
