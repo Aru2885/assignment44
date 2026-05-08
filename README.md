@@ -88,15 +88,15 @@ E. Screenshots:
 
 Graph structure output
 
-![Graph Structure](Screenshots/Graph.png)
+![Screenshot 1](Screenshots/Graph.png)
 
 BFS and DFS traversal output
 
-![Screenshot 1](Screenshots/BFSandDFS.png)
+![Screenshot 2](Screenshots/BFS_and_DFS.png)
 
 Performance results
 
-![Screenshot 1](Screenshots/Result.png)
+![Screenshot 3](Screenshots/Result.png)
 
 F. Reflection Section
 
