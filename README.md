@@ -58,7 +58,7 @@ DFS:
    
 3. Recursively visit all unvisited neighbours.
 
-Use cases:Topological sorting, detecting cycles, solving mazes, finding connected components.
+Use cases: Topological sorting, detecting cycles, solving mazes, finding connected components.
 
 Time complexity: O(V + E) – same as BFS
 
@@ -88,7 +88,7 @@ E. Screenshots:
 
 Graph structure output
 
-![Screenshot 1](Screenshot/Graph.png)
+![Graph Structure](Screenshot/Graph.png)
 
 BFS and DFS traversal output
 
