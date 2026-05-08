@@ -1,14 +1,12 @@
 import java.util.*;
 public class Graph {
-    private final Map<Integer, Vertex> vertices;
     private final Map<Integer, List<Integer>> adjList;
     private final List<Edge> edges;
-    private boolean directed;
-    public Graph(boolean directed) {
-        this.directed = directed;
-        vertices = new HashMap<>();
+    private final Map<Integer, Vertex> vertices;
+    public Graph() {
         adjList = new HashMap<>();
         edges = new ArrayList<>();
+        vertices = new HashMap<>();
     }
     public void addVertex(Vertex v) {
         int id = v.getId();
@@ -18,36 +16,32 @@ public class Graph {
         }
     }
     public void addEdge(int fromId, int toId) {
-        if (!vertices.containsKey(fromId) || !vertices.containsKey(toId)) {
-            throw new IllegalArgumentException("Vertex not found");
+        Vertex from = vertices.get(fromId);
+        Vertex to = vertices.get(toId);
+        if (from == null || to == null) {
+            throw new IllegalArgumentException("Vertex does not exist");
         }
         adjList.get(fromId).add(toId);
-        edges.add(new Edge(vertices.get(fromId), vertices.get(toId)));
-
-        if (!directed) {
-            adjList.get(toId).add(fromId);
-            edges.add(new Edge(vertices.get(toId), vertices.get(fromId)));
-        }
+        adjList.get(toId).add(fromId);
+        edges.add(new Edge(from, to));
+        edges.add(new Edge(to, from));
     }
     public void printGraph() {
-        System.out.println("Graph adjacency list:");
+        System.out.println("Adjacency List:");
         for (int id : adjList.keySet()) {
             System.out.println(vertices.get(id) + " -> " + adjList.get(id));
         }
     }
-    public void bfs(int startId) {
-        if (!vertices.containsKey(startId)) {
-            System.out.println("Start vertex not found.");
-            return;
-        }
+    public List<Vertex> bfs(int startId) {
+        if (!vertices.containsKey(startId)) return Collections.emptyList();
+        List<Vertex> order = new ArrayList<>();
         Set<Integer> visited = new HashSet<>();
         Queue<Integer> queue = new LinkedList<>();
         visited.add(startId);
         queue.add(startId);
-        System.out.print("BFS order: ");
         while (!queue.isEmpty()) {
             int current = queue.poll();
-            System.out.print(vertices.get(current) + " ");
+            order.add(vertices.get(current));
             for (int neighbor : adjList.get(current)) {
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
@@ -55,31 +49,28 @@ public class Graph {
                 }
             }
         }
-        System.out.println();
+        return order;
     }
-    private void dfsUtil(int current, Set<Integer> visited) {
-        visited.add(current);
-        System.out.print(vertices.get(current) + " ");
-        for (int neighbor : adjList.get(current)) {
+    public List<Vertex> dfs(int startId) {
+        if (!vertices.containsKey(startId)) return Collections.emptyList();
+        List<Vertex> order = new ArrayList<>();
+        Set<Integer> visited = new HashSet<>();
+        dfsRecursive(startId, visited, order);
+        return order;
+    }
+    private void dfsRecursive(int currentId, Set<Integer> visited, List<Vertex> order) {
+        visited.add(currentId);
+        order.add(vertices.get(currentId));
+        for (int neighbor : adjList.get(currentId)) {
             if (!visited.contains(neighbor)) {
-                dfsUtil(neighbor, visited);
+                dfsRecursive(neighbor, visited, order);
             }
         }
     }
-    public void dfs(int startId) {
-        if (!vertices.containsKey(startId)) {
-            System.out.println("Start vertex not found.");
-            return;
-        }
-        Set<Integer> visited = new HashSet<>();
-        System.out.print("DFS order: ");
-        dfsUtil(startId, visited);
-        System.out.println();
+    public int getVertexCount() {
+        return vertices.size();
     }
-    public Map<Integer, List<Integer>> getAdjList() {
-        return adjList;
-    }
-    public Vertex getVertex(int id) {
-        return vertices.get(id);
+    public int getEdgeCount() {
+        return edges.size() / 2;
     }
 }
