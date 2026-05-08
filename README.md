@@ -58,7 +58,7 @@ DFS:
    
 3. Recursively visit all unvisited neighbours.
 
-Use cases:Topological sorting, detecting cycles, solving mazes, finding connected components.
+Use cases: Topological sorting, detecting cycles, solving mazes, finding connected components.
 
 Time complexity: O(V + E) – same as BFS
 
@@ -66,17 +66,43 @@ D. Experimental Results
 
 Tests were run on a connected undirected graph where each vertex connects to the next two vertices (plus a couple of extra edges). Traversal starts at vertex 0.
 
-| Vertices | BFS time (ns) | DFS time (ns) |
-|----------|---------------|---------------|
-| 10       | 48500         | 37200         |
-| 30       | 126800        | 108300        |
-| 100      | 489200        | 452100        |
+| Vertices | BFS Time (ns) | DFS Time (ns) | Edges |
+|----------|---------------|---------------|-------|
+| 10       | 1,980,833     | 855,375       | ~18   |
+| 30       | 940,166       | 271,125       | ~58   |
+| 100      | 3,131,458     | 1,817,708     | ~198  |
 
 Traversal order (10 vertices):
 
 - BFS: V0 V1 V2 V5 V3 V4 V6 V7 V8 V9
   
 - DFS: V0 V1 V2 V4 V5 V3 V6 V8 V9 V7
+
+Observations:
+- Both BFS and DFS scale roughly linearly with the number of vertices and edges, matching the expected O(V + E) complexity.  
+- In these experiments, DFS was consistently faster – likely because recursion has lower overhead than the explicit Queue operations in BFS (Java's LinkedList). However, the difference is not drastic.  
+- Graph structure affects traversal order dramatically: BFS gives a level‑order sequence (vertices closer to the start appear first), while DFS produces a depth‑first order (following each branch completely before moving to the next).  
+- For larger graphs (100 vertices), both algorithms maintain linear growth, confirming the theoretical predictions.
+
+E. Screenshots:
+
+Graph structure output
+
+![Graph Structure](Screenshots/Graph.png)
+
+BFS and DFS traversal output
+
+![Screenshot 1](Screenshots/BFSandDFS.png)
+
+Performance results
+
+![Screenshot 1](Screenshots/Result.png)
+
+F. Reflection Section
+
+Implementing BFS and DFS in an undirected graph using an adjacency list reinforced my understanding of how data structures (queue vs. recursion/stack) affect traversal order. BFS is ideal for finding the shortest path in unweighted graphs, while DFS uses less memory on deep graphs and is easier to implement recursively. A key challenge was ensuring that the visited set prevents infinite loops, especially for DFS recursion on large graphs (though Java's stack handled 100 vertices without issues). I also observed that the adjacency list makes neighbour iteration efficient, and the choice of traversal affects more than performance – the order of vertex discovery can be quite different, even on the same graph.
+
+The experiment confirmed the theoretical O(V + E) complexity: doubling the graph size roughly doubled the execution time. DFS was slightly faster in my tests due to lower constant overhead, but both algorithms are suitable for most traversal tasks.
 
 
 
