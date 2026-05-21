@@ -65,6 +65,7 @@ public class Graph {
         }
         return order;
     }
+
     public List<Vertex> dfs(int startId) {
         if (!vertices.containsKey(startId)) return Collections.emptyList();
         List<Vertex> order = new ArrayList<>();
@@ -87,25 +88,32 @@ public class Graph {
     public int getVertexCount() {
         return vertices.size();
     }
+
     public int getEdgeCount() {
         return edges.size() / 2;
     }
     public void dijkstra(int startId) {
         if (!vertices.containsKey(startId)) {
-            System.out.println("Start vertex not found.");
+            System.out.println("Start vertex " + startId + " not found!");
             return;
         }
 
         int n = vertices.size();
         Map<Integer, Integer> idToIndex = new HashMap<>();
+        Map<Integer, Integer> indexToId = new HashMap<>();
         int idx = 0;
         for (int id : vertices.keySet()) {
-            idToIndex.put(id, idx++);
+            idToIndex.put(id, idx);
+            indexToId.put(idx, id);
+            idx++;
         }
 
         int[] dist = new int[n];
         boolean[] visited = new boolean[n];
+        int[] prev = new int[n];
+
         Arrays.fill(dist, Integer.MAX_VALUE);
+        Arrays.fill(prev, -1);
         int startIdx = idToIndex.get(startId);
         dist[startIdx] = 0;
         for (int i = 0; i < n; i++) {
@@ -120,7 +128,7 @@ public class Graph {
             if (uIdx == -1) break;
 
             visited[uIdx] = true;
-            int uId = getVertexIdByIndex(uIdx, idToIndex);
+            int uId = indexToId.get(uIdx);
             for (Edge edge : adjList.get(uId)) {
                 int vId = edge.getDestination().getId();
                 int vIdx = idToIndex.get(vId);
@@ -128,21 +136,34 @@ public class Graph {
                 if (!visited[vIdx] && dist[uIdx] != Integer.MAX_VALUE
                         && dist[uIdx] + weight < dist[vIdx]) {
                     dist[vIdx] = dist[uIdx] + weight;
+                    prev[vIdx] = uIdx;
                 }
             }
         }
         System.out.println("\n=== Dijkstra's Shortest Path from " + vertices.get(startId) + " ===");
-        System.out.println("Vertex\tDistance from Start");
         for (int id : vertices.keySet()) {
             int d = dist[idToIndex.get(id)];
-            String distStr = (d == Integer.MAX_VALUE) ? "∞" : String.valueOf(d);
-            System.out.println(vertices.get(id) + "\t\t" + distStr);
+            System.out.print("To " + vertices.get(id) + ": ");
+            if (d == Integer.MAX_VALUE) {
+                System.out.println("NOT REACHABLE");
+            } else {
+                System.out.print("distance = " + d + ", path = ");
+                printPath(startIdx, idToIndex.get(id), indexToId, prev);
+                System.out.println();
+            }
         }
     }
-    private int getVertexIdByIndex(int index, Map<Integer, Integer> idToIndex) {
-        for (Map.Entry<Integer, Integer> entry : idToIndex.entrySet()) {
-            if (entry.getValue() == index) return entry.getKey();
+    private void printPath(int startIdx, int targetIdx, Map<Integer, Integer> indexToId, int[] prev) {
+        List<Integer> pathIds = new ArrayList<>();
+        int cur = targetIdx;
+        while (cur != -1) {
+            pathIds.add(indexToId.get(cur));
+            cur = prev[cur];
         }
-        return -1;
+        Collections.reverse(pathIds);
+        for (int i = 0; i < pathIds.size(); i++) {
+            System.out.print(vertices.get(pathIds.get(i)));
+            if (i < pathIds.size() - 1) System.out.print(" -> ");
+        }
     }
 }

@@ -1,10 +1,10 @@
 public class Main {
     public static void main(String[] args) {
         Experiment exp = new Experiment();
-        System.out.println("=".repeat(70));
+        exp.testDijkstra();
+        System.out.println("\n" + "=".repeat(70) + "\n");
         Graph smallGraph = exp.createTestGraph(10);
         exp.printResults(smallGraph);
-        smallGraph.dijkstra(0);
         System.out.println("\n" + "=".repeat(70) + "\n");
         exp.runMultipleTests();
     }
