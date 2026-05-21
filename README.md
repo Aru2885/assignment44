@@ -104,6 +104,17 @@ Implementing BFS and DFS in an undirected graph using an adjacency list reinforc
 
 The experiment confirmed the theoretical O(V + E) complexity: doubling the graph size roughly doubled the execution time. DFS was slightly faster in my tests due to lower constant overhead, but both algorithms are suitable for most traversal tasks.
 
+# Dijkstra’s Shortest Path with Weighted Graph (Bonus Task)
+
+## Project Overview
+This project extends a basic undirected graph implementation (originally supporting BFS and DFS) to handle **weighted edges** and implements **Dijkstra’s algorithm** to find the shortest path from a starting vertex to all other vertices.
+
+The program:
+- Stores weighted edges in an adjacency list.
+- Performs BFS and DFS traversals (ignoring edge weights).
+- Computes shortest distances **and** reconstructs the actual shortest paths using Dijkstra’s algorithm.
+- Includes a dedicated weighted test graph for clear demonstration.
+- Retains the original unweighted chain graph for BFS/DFS performance tests.
 
 
 
