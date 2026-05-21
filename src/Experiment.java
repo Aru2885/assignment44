@@ -1,4 +1,5 @@
 import java.util.List;
+
 public class Experiment {
     public void runTraversals(Graph g, boolean printOrder) {
         int start = 0;
@@ -6,10 +7,12 @@ public class Experiment {
         List<Vertex> bfsOrder = g.bfs(start);
         long endTime = System.nanoTime();
         long bfsDuration = endTime - startTime;
+
         startTime = System.nanoTime();
         List<Vertex> dfsOrder = g.dfs(start);
         endTime = System.nanoTime();
         long dfsDuration = endTime - startTime;
+
         if (printOrder) {
             System.out.println("BFS Traversal Order: " + bfsOrder);
             System.out.println("DFS Traversal Order: " + dfsOrder);
@@ -23,8 +26,8 @@ public class Experiment {
             g.addVertex(new Vertex(i));
         }
         for (int i = 0; i < n; i++) {
-            if (i + 1 < n) g.addEdge(i, i + 1);
-            if (i + 2 < n) g.addEdge(i, i + 2);
+            if (i + 1 < n) g.addWeightedEdge(i, i + 1, 2);
+            if (i + 2 < n) g.addWeightedEdge(i, i + 2, 5);
         }
         return g;
     }
@@ -37,12 +40,15 @@ public class Experiment {
             Graph g = createTestGraph(size);
             g.bfs(0);
             g.dfs(0);
+
             long start = System.nanoTime();
             g.bfs(0);
             long bfsTime = System.nanoTime() - start;
+
             start = System.nanoTime();
             g.dfs(0);
             long dfsTime = System.nanoTime() - start;
+
             System.out.printf("%-10d %-18d %-18d %-12d%n",
                     size, bfsTime, dfsTime, g.getEdgeCount());
         }

@@ -4,6 +4,7 @@ public class Main {
         System.out.println("=".repeat(70));
         Graph smallGraph = exp.createTestGraph(10);
         exp.printResults(smallGraph);
+        smallGraph.dijkstra(0);
         System.out.println("\n" + "=".repeat(70) + "\n");
         exp.runMultipleTests();
     }
