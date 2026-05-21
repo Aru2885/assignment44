@@ -115,9 +115,57 @@ The program:
 - Computes shortest distances **and** reconstructs the actual shortest paths using Dijkstra’s algorithm.
 - Includes a dedicated weighted test graph for clear demonstration.
 - Retains the original unweighted chain graph for BFS/DFS performance tests.
+- 
+# Data Structures Used
+- **Adjacency List with weights**: `Map<Integer, List<Edge>>` – each `Edge` stores `(destination, weight)`
+- **Distance array**: `int[] dist` – stores shortest known distance from start to each vertex
+- **Visited array**: `boolean[] visited` – marks vertices whose final distance is confirmed
+- **Previous array**: `int[] prev` – stores the previous vertex on the shortest path (for reconstruction)
+
+## Algorithm Steps
+
+### Initialization:
+1. Map each vertex ID to an index (0..n-1) for array access.
+2. Set `dist[startIndex] = 0`, all other `dist[] = Integer.MAX_VALUE`.
+3. Set all `visited[] = false`, all `prev[] = -1`.
+
+### Main Loop (repeat V times – O(V²)):
+1. Find the unvisited vertex with the smallest `dist[]` (linear scan).
+2. Mark it as visited.
+3. **Relaxation**: For each neighbor of this vertex:
+   - Calculate `newDist = currentDist + edgeWeight`.
+   - If `newDist < neighbor's current dist`:
+     - Update `dist[neighbor] = newDist`.
+     - Record the path: `prev[neighbor] = currentIndex`.
+
+### Path Reconstruction (after the loop):
+- For any target vertex, follow `prev[]` backwards from target to start.
+- Reverse the sequence to get the shortest path.
+- If distance is `Integer.MAX_VALUE`, print "NOT REACHABLE".
+
+## Complexity
+- **Time**: \( O(V^2) \) – because we use a simple loop to find the minimum (no priority queue).
+- **Space**: \( O(V + E) \) – adjacency list plus a few arrays of size V.
+
+## Files Modified
+
+| File | Changes |
+|------|---------|
+| `Edge.java` | Added `weight` field, constructor with weight, getter method. |
+| `Graph.java` | Updated adjacency list to store `Edge` objects; added `dijkstra()` method with arrays and path reconstruction; updated BFS/DFS to work with `Edge`. |
+| `Experiment.java` | Added `createWeightedTestGraph()` and `testDijkstra()` to demonstrate algorithm. |
+| `Main.java` | Modified to call Dijkstra test and BFS/DFS performance tests. |
+
 
 ![Dijkstra from V0](Screenshots/screenshot1.png)
 ![Dijkstra from V3](Screenshots/screenshot2.png)
+
+What I Learned
+
+Dijkstra's algorithm guarantees the shortest path only when all edge weights are non‑negative. My implementation works correctly for the test graphs provided.
+The O(V²) version (using arrays and simple loops) is easier to understand and perfectly sufficient for small graphs (≤ a few hundred vertices). For larger graphs, a priority queue would be necessary.
+Path reconstruction (the prev[] array) is a valuable pattern – storing “where I came from” allows tracing the route backwards and then reversing it to print the path.
+Using arrays for distances and visited nodes (as suggested in the task) keeps the code clean and efficient for the required scope.
 
 
 
