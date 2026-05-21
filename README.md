@@ -116,8 +116,8 @@ The program:
 - Includes a dedicated weighted test graph for clear demonstration.
 - Retains the original unweighted chain graph for BFS/DFS performance tests.
 
-![Dijkstra from V0](screenshot1.png)
-![Dijkstra from V3](screenshot2.png)
+![Dijkstra from V0](Screenshots/screenshot1.png)
+![Dijkstra from V3](Screenshots/screenshot2.png)
 
 
 
